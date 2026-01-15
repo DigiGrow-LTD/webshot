@@ -5,6 +5,11 @@ services:
     restart: unless-stopped
     expose:
       - "80"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.nginx.rule=Host(`${SERVICE_FQDN_NGINX}`) || Host(`webshot.sys.digigrow.uk`)
+      - traefik.http.routers.nginx.entryPoints=http,https
+      - traefik.http.services.nginx.loadbalancer.server.port=80
     depends_on:
       api:
         condition: service_healthy
