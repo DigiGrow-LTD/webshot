@@ -1,12 +1,10 @@
 services:
   nginx:
-    image: nginx:alpine
+    build: ./nginx
     container_name: webshot-nginx
     restart: unless-stopped
     expose:
       - "80"
-    volumes:
-      - ./nginx:/etc/nginx/conf.d:ro
     depends_on:
       api:
         condition: service_healthy
