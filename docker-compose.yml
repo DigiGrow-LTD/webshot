@@ -3,8 +3,8 @@ services:
     image: nginx:alpine
     container_name: webshot-nginx
     restart: unless-stopped
-    ports:
-      - "80:80"
+    expose:
+      - "80"
     volumes:
       - ./nginx:/etc/nginx/conf.d:ro
     depends_on:
