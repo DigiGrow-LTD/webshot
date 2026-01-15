@@ -1,0 +1,16 @@
+{
+    "keys": [
+        {
+            "key": "sk_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "name": "Production",
+            "rateLimit": "10/second",
+            "enabled": true
+        },
+        {
+            "key": "sk_test_xxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "name": "Development",
+            "rateLimit": "20/second",
+            "enabled": true
+        }
+    ]
+}

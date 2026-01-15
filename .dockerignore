@@ -1,0 +1,48 @@
+# Dependencies
+node_modules
+
+# Build output (will be created in container)
+dist
+
+# Git
+.git
+.gitignore
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Config with secrets
+config/api-keys.json
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs
+
+# Test
+coverage
+*.test.ts
+
+# Docker
+docker-compose*.yml
+Dockerfile*
+.dockerignore
+
+# Documentation
+*.md
+!README.md
+
+# Local volumes
+postgres_data
+minio_data
