@@ -309,7 +309,7 @@ router.get(
                     id: screenshot.id,
                     url: screenshot.url,
                     path,
-                    downloadUrl: `/api/screenshot/${screenshot.id}/download`,
+                    downloadUrl: `/screenshot/${screenshot.id}/download`,
                     fileSize: screenshot.fileSize ?? 0
                 };
             }

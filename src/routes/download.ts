@@ -64,7 +64,7 @@ router.get(
                 id: screenshot.id,
                 url: screenshot.url,
                 filename: screenshot.filename,
-                downloadUrl: `/api/screenshot/${screenshot.id}/download`,
+                downloadUrl: `/screenshot/${screenshot.id}/download`,
                 metadata: {
                     viewport: screenshot.viewport,
                     fullPage: screenshot.fullPage,

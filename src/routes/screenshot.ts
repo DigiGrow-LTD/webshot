@@ -116,7 +116,7 @@ router.post(
                 id: screenshot.id,
                 url: screenshot.url,
                 filename: screenshot.filename,
-                downloadUrl: `/api/screenshot/${screenshot.id}/download`,
+                downloadUrl: `/screenshot/${screenshot.id}/download`,
                 viewport: screenshot.viewport,
                 fileSize: screenshot.fileSize ?? 0,
                 expiresAt: screenshot.expiresAt.toISOString(),
