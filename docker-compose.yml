@@ -39,9 +39,9 @@ services:
       - SCREENSHOT_TIMEOUT=30000
       - CLEANUP_INTERVAL=3600000
       - PRESIGNED_URL_EXPIRY=3600
-      - CONFIG_DIR=/app/config
-    volumes:
-      - ./config:/app/config:ro
+      - API_KEY=${API_KEY:-}
+      - API_KEY_NAME=${API_KEY_NAME:-Production}
+      - API_KEY_RATE_LIMIT=${API_KEY_RATE_LIMIT:-10/second}
     depends_on:
       postgres:
         condition: service_healthy
