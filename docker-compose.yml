@@ -4,15 +4,6 @@ services:
     restart: unless-stopped
     expose:
       - "80"
-    labels:
-      - traefik.enable=true
-      - "traefik.http.routers.webshot.rule=Host(`webshot.sys.digigrow.uk`)"
-      - traefik.http.routers.webshot.entryPoints=http
-      - "traefik.http.routers.webshot-secure.rule=Host(`webshot.sys.digigrow.uk`)"
-      - traefik.http.routers.webshot-secure.entryPoints=https
-      - traefik.http.routers.webshot-secure.tls=true
-      - traefik.http.routers.webshot-secure.tls.certresolver=letsencrypt
-      - traefik.http.services.webshot.loadbalancer.server.port=80
     depends_on:
       api:
         condition: service_healthy
