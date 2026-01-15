@@ -95,6 +95,7 @@ services:
   minio-init:
     image: minio/mc:latest
     container_name: webshot-minio-init
+    restart: "no"
     depends_on:
       minio:
         condition: service_healthy
