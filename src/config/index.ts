@@ -96,19 +96,17 @@ export function loadConfig(): Config {
 }
 
 function loadApiKeysFromEnv(): ApiKeysConfig | null {
-    const envValue = process.env['API_KEYS'];
-    if (!envValue) return null;
+    const key = process.env['API_KEY'];
+    if (!key) return null;
 
-    try {
-        const keys = JSON.parse(envValue);
-        if (!Array.isArray(keys)) {
-            throw new Error('API_KEYS must be a JSON array');
-        }
-        return { keys };
-    } catch (error) {
-        const message = error instanceof Error ? error.message : String(error);
-        throw new Error(`Invalid API_KEYS env var: ${message}`);
-    }
+    return {
+        keys: [{
+            key,
+            name: process.env['API_KEY_NAME'] ?? 'Default',
+            rateLimit: process.env['API_KEY_RATE_LIMIT'] ?? '10/second',
+            enabled: process.env['API_KEY_ENABLED'] !== 'false'
+        }]
+    };
 }
 
 function loadApiKeysFromFile(configDir: string): ApiKeysConfig | null {

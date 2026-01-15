@@ -162,12 +162,12 @@ Service health check.
 
 ### API Keys
 
-**Option 1: Environment Variable (recommended for Coolify)**
+**Option 1: Environment Variables (recommended for Coolify)**
 
-Set the `API_KEYS` env var as a JSON array:
-
-```bash
-API_KEYS='[{"key":"sk_live_xxx","name":"Production","rateLimit":"10/second","enabled":true}]'
+```
+API_KEY=sk_live_your_secret_key
+API_KEY_NAME=Production
+API_KEY_RATE_LIMIT=10/second
 ```
 
 **Option 2: Config File (fallback)**
