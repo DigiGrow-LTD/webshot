@@ -5,11 +5,6 @@ services:
     restart: unless-stopped
     expose:
       - "80"
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.nginx.rule=Host(`${SERVICE_FQDN_NGINX}`) || Host(`webshot.sys.digigrow.uk`)
-      - traefik.http.routers.nginx.entryPoints=http,https
-      - traefik.http.services.nginx.loadbalancer.server.port=80
     depends_on:
       api:
         condition: service_healthy
@@ -20,8 +15,6 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
-    networks:
-      - webshot-network
 
   api:
     build: .
@@ -51,13 +44,11 @@ services:
       minio:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/health/live"]
+      test: ["CMD", "curl", "-sf", "http://localhost:3000/health/live"]
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 40s
-    networks:
-      - webshot-network
+      start_period: 60s
 
   postgres:
     image: postgres:16-alpine
@@ -75,8 +66,6 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    networks:
-      - webshot-network
 
   minio:
     image: minio/minio:latest
@@ -93,10 +82,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    networks:
-      - webshot-network
 
-  # One-time init container to create bucket with lifecycle policy
   minio-init:
     image: minio/mc:latest
     container_name: webshot-minio-init
@@ -113,13 +99,7 @@ services:
       echo 'MinIO initialization complete';
       exit 0;
       "
-    networks:
-      - webshot-network
 
 volumes:
   postgres_data:
   minio_data:
-
-networks:
-  webshot-network:
-    driver: bridge
