@@ -27,18 +27,18 @@ cp config/api-keys.example.json config/api-keys.json
 docker compose up -d
 ```
 
-Verify: `curl http://localhost/api/health`
+Verify: `curl http://localhost/health`
 
 ## API
 
 All endpoints require `X-API-Key` header (except health checks).
 
-### POST /api/screenshot
+### POST /screenshot
 
 Capture one or more URLs.
 
 ```bash
-curl -X POST http://localhost/api/screenshot \
+curl -X POST http://localhost/screenshot \
   -H "Content-Type: application/json" \
   -H "X-API-Key: YOUR_KEY" \
   -d '{
@@ -65,18 +65,18 @@ curl -X POST http://localhost/api/screenshot \
   "screenshots": [{
     "id": "uuid",
     "url": "https://example.com",
-    "downloadUrl": "/api/screenshot/uuid/download",
+    "downloadUrl": "/screenshot/uuid/download",
     "fileSize": 245678
   }]
 }
 ```
 
-### POST /api/site
+### POST /site
 
 Capture an entire website via sitemap (async).
 
 ```bash
-curl -X POST http://localhost/api/site \
+curl -X POST http://localhost/site \
   -H "Content-Type: application/json" \
   -H "X-API-Key: YOUR_KEY" \
   -d '{
@@ -100,11 +100,11 @@ curl -X POST http://localhost/api/site \
   "siteId": "uuid",
   "status": "processing",
   "totalPages": 28,
-  "message": "Poll GET /api/site/uuid for progress."
+  "message": "Poll GET /site/uuid for progress."
 }
 ```
 
-### GET /api/site/:id
+### GET /site/:id
 
 Get site capture progress and results.
 
@@ -116,17 +116,17 @@ Get site capture progress and results.
   "capturedPages": 28,
   "failedPages": 0,
   "pages": {
-    "/": { "id": "uuid", "downloadUrl": "/api/screenshot/uuid/download" },
-    "/about": { "id": "uuid", "downloadUrl": "/api/screenshot/uuid/download" }
+    "/": { "id": "uuid", "downloadUrl": "/screenshot/uuid/download" },
+    "/about": { "id": "uuid", "downloadUrl": "/screenshot/uuid/download" }
   }
 }
 ```
 
-### GET /api/screenshot/:id/download
+### GET /screenshot/:id/download
 
 Download a screenshot (redirects to presigned S3 URL).
 
-### GET /api/screenshots
+### GET /screenshots
 
 List screenshots with filtering.
 
@@ -137,11 +137,11 @@ List screenshots with filtering.
 | limit | number | Max results (default 50) |
 | offset | number | Pagination offset |
 
-### DELETE /api/screenshot/:id
+### DELETE /screenshot/:id
 
 Delete a screenshot.
 
-### GET /api/health
+### GET /health
 
 Service health check.
 
@@ -202,25 +202,20 @@ Create `config/api-keys.json`:
 
 ```
 ┌─────────────────────────────────────┐
-│           Nginx (port 80)           │
+│         API (port 3000)             │
+│           Express.js                │
 └───────────┬───────────┬─────────────┘
             │           │
-    /api/*  │   /files/*│
             ▼           ▼
     ┌───────────┐   ┌───────────┐
-    │    API    │   │   MinIO   │
-    │  Express  │   │  S3 API   │
-    └─────┬─────┘   └───────────┘
-          │
-          ▼
-    ┌───────────┐
-    │ PostgreSQL│
-    └───────────┘
+    │ PostgreSQL│   │   MinIO   │
+    │  metadata │   │  storage  │
+    └───────────┘   └───────────┘
 ```
 
-- `/api/*` - Screenshot API
-- `/files/*` - MinIO S3 (presigned downloads)
-- `/console/*` - MinIO admin UI
+- All endpoints served directly by the API
+- File downloads streamed through `/screenshot/:id/download`
+- MinIO accessed internally only
 
 ## Animation Handling
 
