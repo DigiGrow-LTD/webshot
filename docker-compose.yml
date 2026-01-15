@@ -4,6 +4,9 @@ services:
     restart: unless-stopped
     expose:
       - "80"
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=${COOLIFY_NETWORK:-coolify}
     depends_on:
       api:
         condition: service_healthy
